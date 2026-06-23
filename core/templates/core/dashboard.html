@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- WELCOME HEADER -->
+    <div class="row py-4">
+        <div class="col-12">
+            <div style="background:linear-gradient(135deg,#0a1628,#1a56db);border-radius:20px;padding:2rem;">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 style="color:white;font-weight:800;margin:0;">
+                            <i class="fas fa-hand-wave me-2"></i>
+                            Welcome back, {{ user.username }}!
+                        </h2>
+                        <p style="color:#ccd6f6;margin:0.5rem 0 0;">
+                            Manage your documents securely from your personal dashboard.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <a href="{% url 'upload' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
+                            <i class="fas fa-upload me-2"></i>Upload Document
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <i class="fas fa-file-alt" style="font-size:2.5rem;color:#1a56db;margin-bottom:0.5rem;"></i>
+                <h3 style="font-weight:800;color:#0a1628;">{{ docs|length }}</h3>
+                <p style="color:#666;margin:0;">Total Documents</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <i class="fas fa-clock" style="font-size:2.5rem;color:#00b4d8;margin-bottom:0.5rem;"></i>
+                <h3 style="font-weight:800;color:#0a1628;">14 Days</h3>
+                <p style="color:#666;margin:0;">Max Storage Period</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 text-center">
+                <i class="fas fa-shield-alt" style="font-size:2.5rem;color:#28a745;margin-bottom:0.5rem;"></i>
+                <h3 style="font-weight:800;color:#0a1628;">Secure</h3>
+                <p style="color:#666;margin:0;">Your Account Status</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DOCUMENTS TABLE -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header-blue">
+                    <i class="fas fa-folder-open me-2"></i>My Documents
+                </div>
+                <div class="card-body p-0">
+                    {% if docs %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead style="background:#f8f9fa;">
+                                <tr>
+                                    <th style="padding:1rem;color:#0a1628;">#</th>
+                                    <th style="padding:1rem;color:#0a1628;">Document Name</th>
+                                    <th style="padding:1rem;color:#0a1628;">Size</th>
+                                    <th style="padding:1rem;color:#0a1628;">Uploaded</th>
+                                    <th style="padding:1rem;color:#0a1628;">Expires In</th>
+                                    <th style="padding:1rem;color:#0a1628;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for doc in docs %}
+                                <tr>
+                                    <td style="padding:1rem;color:#666;">{{ forloop.counter }}</td>
+                                    <td style="padding:1rem;">
+                                        <i class="fas fa-file me-2" style="color:#1a56db;"></i>
+                                        <strong>{{ doc.title }}</strong>
+                                    </td>
+                                    <td style="padding:1rem;color:#666;">
+                                        {% if doc.file_size < 1048576 %}
+                                            {{ doc.file_size|filesizeformat }}
+                                        {% else %}
+                                            {{ doc.file_size|filesizeformat }}
+                                        {% endif %}
+                                    </td>
+                                    <td style="padding:1rem;color:#666;">
+                                        {{ doc.uploaded_at|date:"M d, Y" }}
+                                    </td>
+                                    <td style="padding:1rem;">
+                                        {% if doc.days_until_expiry <= 3 %}
+                                            <span class="badge bg-danger">{{ doc.days_until_expiry }} days left</span>
+                                        {% elif doc.days_until_expiry <= 7 %}
+                                            <span class="badge bg-warning text-dark">{{ doc.days_until_expiry }} days left</span>
+                                        {% else %}
+                                            <span class="badge bg-success">{{ doc.days_until_expiry }} days left</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="padding:1rem;">
+                                        <a href="{% url 'download' doc.id %}" class="btn btn-success btn-sm me-1">
+                                            <i class="fas fa-download me-1"></i>Download
+                                        </a>
+                                        <a href="{% url 'delete' doc.id %}" class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure you want to delete this document?')">
+                                            <i class="fas fa-trash me-1"></i>Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-folder-open" style="font-size:4rem;color:#ccd6f6;"></i>
+                        <h5 style="color:#666;margin-top:1rem;">No documents yet</h5>
+                        <p style="color:#999;">Upload your first document to get started!</p>
+                        <a href="{% url 'upload' %}" class="btn btn-primary">
+                            <i class="fas fa-upload me-2"></i>Upload Now
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

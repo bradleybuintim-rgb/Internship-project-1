@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+{% block title %}Merge PDFs{% endblock %}
+{% block content %}
+<div class="container">
+
+    <div class="row py-4">
+        <div class="col-12">
+            <div style="background:linear-gradient(135deg,#0a1628,#1a56db);border-radius:20px;padding:2rem;">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 style="color:white;font-weight:800;margin:0;">
+                            <i class="fas fa-object-group me-2"></i>Merge PDFs
+                        </h2>
+                        <p style="color:#ccd6f6;margin:0.5rem 0 0;">
+                            Combine multiple PDF files into one single document.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
+                            <i class="fas fa-th-large me-2"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header-blue">
+                    <i class="fas fa-object-group me-2"></i>Upload PDFs to Merge
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'do_merge' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label style="font-weight:600;color:#0a1628;">Choose PDF Files</label>
+                            <div class="mt-1" style="border:2px dashed #1a56db;border-radius:12px;padding:2rem;text-align:center;background:#f8faff;">
+                                <i class="fas fa-layer-group" style="font-size:3rem;color:#1a56db;margin-bottom:1rem;"></i>
+                                <p style="color:#666;margin-bottom:1rem;">Select 2 or more PDF files</p>
+                                <input type="file" name="files" required
+                                       accept=".pdf" multiple
+                                       style="display:block;margin:0 auto;">
+                            </div>
+                            <small style="color:#999;">Hold Ctrl (or Cmd on Mac) to select multiple files</small>
+                        </div>
+                        <div style="background:#e8f0fe;border-radius:10px;padding:1rem;margin-bottom:1.5rem;">
+                            <p style="color:#0a1628;margin:0;font-size:0.9rem;">
+                                <i class="fas fa-info-circle me-2" style="color:#1a56db;"></i>
+                                Upload at least 2 PDF files. They will be merged in the order you select them.
+                            </p>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-object-group me-2"></i>Merge & Download
+                        </button>
+                    </form>
+                    <hr>
+                    <p class="text-center mb-0" style="color:#666;">
+                        <a href="{% url 'dashboard' %}" style="color:#1a56db;font-weight:600;">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

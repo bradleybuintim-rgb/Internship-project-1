@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+{% block title %}Compress Document{% endblock %}
+{% block content %}
+<div class="container">
+
+    <div class="row py-4">
+        <div class="col-12">
+            <div style="background:linear-gradient(135deg,#0a1628,#1a56db);border-radius:20px;padding:2rem;">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 style="color:white;font-weight:800;margin:0;">
+                            <i class="fas fa-compress-alt me-2"></i>Compress Document
+                        </h2>
+                        <p style="color:#ccd6f6;margin:0.5rem 0 0;">
+                            Reduce the file size of your PDF or image files instantly.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
+                            <i class="fas fa-th-large me-2"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header-blue">
+                    <i class="fas fa-compress-alt me-2"></i>Upload File to Compress
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'do_compress' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label style="font-weight:600;color:#0a1628;">Choose File</label>
+                            <div class="mt-1" style="border:2px dashed #1a56db;border-radius:12px;padding:2rem;text-align:center;background:#f8faff;">
+                                <i class="fas fa-file-archive" style="font-size:3rem;color:#1a56db;margin-bottom:1rem;"></i>
+                                <p style="color:#666;margin-bottom:1rem;">Click to select your file</p>
+                                <input type="file" name="file" required
+                                       accept=".pdf,.jpg,.jpeg,.png"
+                                       style="display:block;margin:0 auto;">
+                            </div>
+                            <small style="color:#999;">Supported: PDF, JPG, PNG</small>
+                        </div>
+                        <div style="background:#e8f0fe;border-radius:10px;padding:1rem;margin-bottom:1.5rem;">
+                            <p style="color:#0a1628;margin:0;font-size:0.9rem;">
+                                <i class="fas fa-info-circle me-2" style="color:#1a56db;"></i>
+                                Compression reduces file size while maintaining acceptable quality. Great for sharing and storage.
+                            </p>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-compress-alt me-2"></i>Compress & Download
+                        </button>
+                    </form>
+                    <hr>
+                    <p class="text-center mb-0" style="color:#666;">
+                        <a href="{% url 'dashboard' %}" style="color:#1a56db;font-weight:600;">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

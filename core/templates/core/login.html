@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center py-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="card">
+                <div class="card-header-blue text-center">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login to Bideu
+                </div>
+                <div class="card-body p-4">
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label style="font-weight:600;color:#0a1628;">Username</label>
+                            <div class="input-group mt-1">
+                                <span class="input-group-text" style="background:#e8f0fe;border-right:none;">
+                                    <i class="fas fa-user" style="color:#1a56db;"></i>
+                                </span>
+                                <input type="text" name="username" class="form-control"
+                                       placeholder="Enter your username" required
+                                       style="border-left:none;">
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-4">
+                            <label style="font-weight:600;color:#0a1628;">Password</label>
+                            <div class="input-group mt-1">
+                                <span class="input-group-text" style="background:#e8f0fe;border-right:none;">
+                                    <i class="fas fa-lock" style="color:#1a56db;"></i>
+                                </span>
+                                <input type="password" name="password" class="form-control"
+                                       placeholder="Enter your password" required
+                                       style="border-left:none;">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                    </form>
+
+                    <hr>
+                    <p class="text-center mb-0" style="color:#666;">
+                        Don't have an account?
+                        <a href="{% url 'register' %}" style="color:#1a56db;font-weight:600;">Register here</a>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

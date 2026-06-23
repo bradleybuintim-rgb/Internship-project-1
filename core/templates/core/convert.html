@@ -1,0 +1,168 @@
+{% extends 'core/base.html' %}
+{% block title %}Convert Document{% endblock %}
+{% block content %}
+<div class="container">
+
+    <div class="row py-4">
+        <div class="col-12">
+            <div style="background:linear-gradient(135deg,#0a1628,#1a56db);border-radius:20px;padding:2rem;">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 style="color:white;font-weight:800;margin:0;">
+                            <i class="fas fa-exchange-alt me-2"></i>Convert Document
+                        </h2>
+                        <p style="color:#ccd6f6;margin:0.5rem 0 0;">
+                            Choose a conversion type below then upload your file.
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
+                            <i class="fas fa-th-large me-2"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONVERSION OPTION CARDS -->
+    <form method="POST" action="{% url 'do_convert' %}" enctype="multipart/form-data" id="convertForm">
+        {% csrf_token %}
+        <input type="hidden" name="conversion_type" id="selectedConversion">
+
+        <!-- PDF CONVERSIONS -->
+        <div class="row mb-2 mt-3">
+            <div class="col-12">
+                <h5 style="color:#0a1628;font-weight:700;">
+                    <i class="fas fa-file-pdf me-2" style="color:#e74c3c;"></i>PDF Conversions
+                </h5>
+            </div>
+        </div>
+        <div class="row g-3 mb-4">
+            {% for conv, label in pdf_conversions %}
+            <div class="col-md-4 col-sm-6">
+                <div class="conversion-card card p-3 text-center" onclick="selectConversion('{{ conv }}')" data-conv="{{ conv }}"
+                     style="cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                    <i class="fas fa-exchange-alt" style="font-size:1.5rem;color:#1a56db;margin-bottom:0.5rem;"></i>
+                    <strong style="color:#0a1628;font-size:0.9rem;">{{ label }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- WORD CONVERSIONS -->
+        <div class="row mb-2">
+            <div class="col-12">
+                <h5 style="color:#0a1628;font-weight:700;">
+                    <i class="fas fa-file-word me-2" style="color:#2980b9;"></i>Word Conversions
+                </h5>
+            </div>
+        </div>
+        <div class="row g-3 mb-4">
+            {% for conv, label in word_conversions %}
+            <div class="col-md-4 col-sm-6">
+                <div class="conversion-card card p-3 text-center" onclick="selectConversion('{{ conv }}')" data-conv="{{ conv }}"
+                     style="cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                    <i class="fas fa-exchange-alt" style="font-size:1.5rem;color:#1a56db;margin-bottom:0.5rem;"></i>
+                    <strong style="color:#0a1628;font-size:0.9rem;">{{ label }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- IMAGE CONVERSIONS -->
+        <div class="row mb-2">
+            <div class="col-12">
+                <h5 style="color:#0a1628;font-weight:700;">
+                    <i class="fas fa-file-image me-2" style="color:#27ae60;"></i>Image Conversions
+                </h5>
+            </div>
+        </div>
+        <div class="row g-3 mb-4">
+            {% for conv, label in image_conversions %}
+            <div class="col-md-4 col-sm-6">
+                <div class="conversion-card card p-3 text-center" onclick="selectConversion('{{ conv }}')" data-conv="{{ conv }}"
+                     style="cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                    <i class="fas fa-exchange-alt" style="font-size:1.5rem;color:#1a56db;margin-bottom:0.5rem;"></i>
+                    <strong style="color:#0a1628;font-size:0.9rem;">{{ label }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- EXCEL & PPTX CONVERSIONS -->
+        <div class="row mb-2">
+            <div class="col-12">
+                <h5 style="color:#0a1628;font-weight:700;">
+                    <i class="fas fa-file-excel me-2" style="color:#1a8a4a;"></i>Excel & PowerPoint Conversions
+                </h5>
+            </div>
+        </div>
+        <div class="row g-3 mb-4">
+            {% for conv, label in other_conversions %}
+            <div class="col-md-4 col-sm-6">
+                <div class="conversion-card card p-3 text-center" onclick="selectConversion('{{ conv }}')" data-conv="{{ conv }}"
+                     style="cursor:pointer;transition:all 0.2s;border:2px solid transparent;">
+                    <i class="fas fa-exchange-alt" style="font-size:1.5rem;color:#1a56db;margin-bottom:0.5rem;"></i>
+                    <strong style="color:#0a1628;font-size:0.9rem;">{{ label }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- UPLOAD & CONVERT SECTION -->
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card" id="uploadSection" style="display:none;">
+                    <div class="card-header-blue">
+                        <i class="fas fa-upload me-2"></i>Upload File —
+                        <span id="selectedLabel">Select a conversion above</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <div style="border:2px dashed #1a56db;border-radius:12px;padding:2rem;text-align:center;background:#f8faff;">
+                            <i class="fas fa-cloud-upload-alt" style="font-size:3rem;color:#1a56db;margin-bottom:1rem;"></i>
+                            <p style="color:#666;margin-bottom:1rem;">Click to select your file</p>
+                            <input type="file" name="file" id="fileInput" required
+                                   style="display:block;margin:0 auto;">
+                        </div>
+                        <div style="background:#e8f0fe;border-radius:10px;padding:1rem;margin:1.5rem 0;">
+                            <p style="color:#0a1628;margin:0;font-size:0.9rem;">
+                                <i class="fas fa-info-circle me-2" style="color:#1a56db;"></i>
+                                Maximum file size: <strong>20MB</strong>
+                            </p>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-exchange-alt me-2"></i>Convert & Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<style>
+.conversion-card:hover {
+    border-color: #1a56db !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(26,86,219,0.2) !important;
+}
+.conversion-card.selected {
+    border-color: #1a56db !important;
+    background: #e8f0fe !important;
+}
+</style>
+
+<script>
+function selectConversion(conv) {
+    document.querySelectorAll('.conversion-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`[data-conv="${conv}"]`).classList.add('selected');
+    document.getElementById('selectedConversion').value = conv;
+    const label = document.querySelector(`[data-conv="${conv}"] strong`).innerText;
+    document.getElementById('selectedLabel').innerText = label;
+    document.getElementById('uploadSection').style.display = 'block';
+    document.getElementById('uploadSection').scrollIntoView({behavior: 'smooth'});
+}
+</script>
+{% endblock %}
