@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import FileResponse
-from .models import Document
 from .converter import convert_file
 from .document_tools import compress_pdf, compress_image, merge_pdfs, split_pdf, ai_summarize
 import os
@@ -25,60 +21,15 @@ def allowed_file(filename):
 def file_size_ok(file):
     return file.size <= MAX_FILE_SIZE
 
-# ── AUTH VIEWS ───────────────────────────────────────────────────
+# ── HOME ─────────────────────────────────────────────────────────
 def home(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
     return render(request, 'core/home.html')
 
-def register(request):
-    if request.method == 'POST':
-        username  = request.POST['username']
-        email     = request.POST['email']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        if password1 != password2:
-            messages.error(request, 'Passwords do not match.')
-            return redirect('register')
-        if User.objects.filter(username=username).exists():
-            messages.error(request, 'Username already taken.')
-            return redirect('register')
-        if len(password1) < 8:
-            messages.error(request, 'Password must be at least 8 characters.')
-            return redirect('register')
-        user = User.objects.create_user(username=username, email=email, password=password1)
-        login(request, user)
-        return redirect('dashboard')
-    return render(request, 'core/register.html')
-
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            return redirect('dashboard')
-        messages.error(request, 'Invalid username or password.')
-    return render(request, 'core/login.html')
-
-def logout_view(request):
-    logout(request)
-    return redirect('login')
-
 # ── DASHBOARD ────────────────────────────────────────────────────
-@login_required
 def dashboard(request):
-    docs = Document.objects.filter(owner=request.user).order_by('-uploaded_at')
-    for doc in docs:
-        if doc.is_expired():
-            doc.file.delete()
-            doc.delete()
-    docs = Document.objects.filter(owner=request.user).order_by('-uploaded_at')
-    return render(request, 'core/dashboard.html', {'docs': docs})
+    return render(request, 'core/dashboard.html')
 
 # ── UPLOAD ───────────────────────────────────────────────────────
-@login_required
 def upload(request):
     if request.method == 'POST' and request.FILES.get('file'):
         f = request.FILES['file']
@@ -88,33 +39,18 @@ def upload(request):
         if not file_size_ok(f):
             messages.error(request, 'File too large. Maximum file size is 20MB.')
             return redirect('upload')
-        title = request.POST.get('title', f.name)
-        Document.objects.create(
-            owner     = request.user,
-            title     = title,
-            file      = f,
-            file_size = f.size,
-        )
-        messages.success(request, f'"{title}" uploaded successfully!')
+        messages.success(request, f'"{f.name}" uploaded successfully!')
         return redirect('dashboard')
     return render(request, 'core/upload.html')
 
 # ── DOWNLOAD & DELETE ────────────────────────────────────────────
-@login_required
 def download(request, doc_id):
-    doc = get_object_or_404(Document, id=doc_id, owner=request.user)
-    return FileResponse(doc.file.open(), as_attachment=True, filename=os.path.basename(doc.file.name))
+    return redirect('dashboard')
 
-@login_required
 def delete(request, doc_id):
-    doc = get_object_or_404(Document, id=doc_id, owner=request.user)
-    doc.file.delete()
-    doc.delete()
-    messages.success(request, 'Document deleted.')
     return redirect('dashboard')
 
 # ── CONVERT ──────────────────────────────────────────────────────
-@login_required
 def convert(request):
     pdf_conversions = [
         ('pdf_to_word',  'PDF → Word (.docx)'),
@@ -145,7 +81,6 @@ def convert(request):
         'other_conversions': other_conversions,
     })
 
-@login_required
 def do_convert(request):
     if request.method == 'POST' and request.FILES.get('file'):
         f = request.FILES['file']
@@ -196,11 +131,9 @@ def do_convert(request):
     return redirect('convert')
 
 # ── COMPRESS ─────────────────────────────────────────────────────
-@login_required
 def compress(request):
     return render(request, 'core/compress.html')
 
-@login_required
 def do_compress(request):
     if request.method == 'POST' and request.FILES.get('file'):
         f = request.FILES['file']
@@ -236,11 +169,9 @@ def do_compress(request):
     return redirect('compress')
 
 # ── MERGE ────────────────────────────────────────────────────────
-@login_required
 def merge(request):
     return render(request, 'core/merge.html')
 
-@login_required
 def do_merge(request):
     if request.method == 'POST':
         files = request.FILES.getlist('files')
@@ -274,11 +205,9 @@ def do_merge(request):
     return redirect('merge')
 
 # ── SPLIT ────────────────────────────────────────────────────────
-@login_required
 def split(request):
     return render(request, 'core/split.html')
 
-@login_required
 def do_split(request):
     if request.method == 'POST' and request.FILES.get('file'):
         f = request.FILES['file']
@@ -309,11 +238,9 @@ def do_split(request):
     return redirect('split')
 
 # ── SUMMARIZE ────────────────────────────────────────────────────
-@login_required
 def summarize(request):
     return render(request, 'core/summarize.html')
 
-@login_required
 def do_summarize(request):
     if request.method == 'POST' and request.FILES.get('file'):
         f   = request.FILES['file']
