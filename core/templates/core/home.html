@@ -1,23 +1,22 @@
 {% extends 'core/base.html' %}
-{% block title %}Welcome{% endblock %}
-
+{% block title %}Free Document Converter & Tools{% endblock %}
 {% block content %}
 <div class="container">
 
     <!-- HERO SECTION -->
     <div class="row align-items-center py-5">
         <div class="col-lg-6">
-            <h1 style="font-size:3rem; font-weight:800; color:#0a1628; line-height:1.2;">
-                Manage Your <span style="color:#1a56db;">Documents</span> Smarter
+            <h1 style="font-size:3rem;font-weight:800;color:#0a1628;line-height:1.2;">
+                Convert & Manage Your <span style="color:#1a56db;">Documents Free</span>
             </h1>
-            <p style="font-size:1.15rem; color:#555; margin:1.5rem 0;">
-                Bideu lets you convert, compress, merge, split and AI-summarize your documents — all in one secure place.
+            <p style="font-size:1.15rem;color:#555;margin:1.5rem 0;">
+                No account needed. Convert, compress, merge, split and AI-summarize your documents instantly — completely free.
             </p>
-            <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">
-                <i class="fas fa-rocket me-2"></i>Get Started Free
+            <a href="{% url 'convert' %}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-exchange-alt me-2"></i>Start Converting
             </a>
-            <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">
-                <i class="fas fa-sign-in-alt me-2"></i>Login
+            <a href="{% url 'compress' %}" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-tools me-2"></i>Use Tools
             </a>
         </div>
         <div class="col-lg-6 text-center mt-4 mt-lg-0">
@@ -30,52 +29,127 @@
     <!-- FEATURES SECTION -->
     <div class="row g-4 py-4">
         <div class="col-12 text-center mb-2">
-            <h2 style="font-weight:800;color:#0a1628;">Everything You Need</h2>
-            <p style="color:#555;">Powerful document tools at your fingertips</p>
+            <h2 style="font-weight:800;color:#0a1628;">Everything You Need — For Free</h2>
+            <p style="color:#555;">No account. No login. No limits.</p>
         </div>
 
-        <!-- Feature 1 -->
+        <!-- Convert -->
         <div class="col-md-4">
             <div class="card h-100 text-center p-4">
                 <div style="background:#e8f0fe;border-radius:16px;padding:1.5rem;display:inline-block;margin:0 auto 1rem;">
                     <i class="fas fa-exchange-alt" style="font-size:2rem;color:#1a56db;"></i>
                 </div>
                 <h5 style="font-weight:700;color:#0a1628;">Format Conversion</h5>
-                <p style="color:#666;">Convert between PDF, Word, JPG, PNG, PPTX and Excel instantly.</p>
+                <p style="color:#666;">Convert between PDF, Word, JPG, PNG, PPTX and Excel — 14 conversion types.</p>
+                <a href="{% url 'convert' %}" class="btn btn-primary btn-sm mt-2">Convert Now</a>
             </div>
         </div>
 
-        <!-- Feature 2 -->
+        <!-- Compress -->
         <div class="col-md-4">
             <div class="card h-100 text-center p-4">
                 <div style="background:#e8f0fe;border-radius:16px;padding:1.5rem;display:inline-block;margin:0 auto 1rem;">
-                    <i class="fas fa-tools" style="font-size:2rem;color:#1a56db;"></i>
+                    <i class="fas fa-compress-alt" style="font-size:2rem;color:#1a56db;"></i>
                 </div>
-                <h5 style="font-weight:700;color:#0a1628;">Document Management</h5>
-                <p style="color:#666;">Compress, merge, split and AI-summarize your documents with ease.</p>
+                <h5 style="font-weight:700;color:#0a1628;">Compress</h5>
+                <p style="color:#666;">Reduce the file size of your PDFs and images without losing quality.</p>
+                <a href="{% url 'compress' %}" class="btn btn-primary btn-sm mt-2">Compress Now</a>
             </div>
         </div>
 
-        <!-- Feature 3 -->
+        <!-- Merge -->
         <div class="col-md-4">
             <div class="card h-100 text-center p-4">
                 <div style="background:#e8f0fe;border-radius:16px;padding:1.5rem;display:inline-block;margin:0 auto 1rem;">
-                    <i class="fas fa-shield-alt" style="font-size:2rem;color:#1a56db;"></i>
+                    <i class="fas fa-object-group" style="font-size:2rem;color:#1a56db;"></i>
                 </div>
-                <h5 style="font-weight:700;color:#0a1628;">Secure Storage</h5>
-                <p style="color:#666;">Your files are stored securely in your personal account for up to 2 weeks.</p>
+                <h5 style="font-weight:700;color:#0a1628;">Merge PDFs</h5>
+                <p style="color:#666;">Combine multiple PDF files into one single document instantly.</p>
+                <a href="{% url 'merge' %}" class="btn btn-primary btn-sm mt-2">Merge Now</a>
+            </div>
+        </div>
+
+        <!-- Split -->
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-4">
+                <div style="background:#e8f0fe;border-radius:16px;padding:1.5rem;display:inline-block;margin:0 auto 1rem;">
+                    <i class="fas fa-cut" style="font-size:2rem;color:#1a56db;"></i>
+                </div>
+                <h5 style="font-weight:700;color:#0a1628;">Split PDF</h5>
+                <p style="color:#666;">Split a PDF into individual pages downloaded as a ZIP file.</p>
+                <a href="{% url 'split' %}" class="btn btn-primary btn-sm mt-2">Split Now</a>
+            </div>
+        </div>
+
+        <!-- AI Summarize -->
+        <div class="col-md-4">
+            <div class="card h-100 text-center p-4">
+                <div style="background:#e8f0fe;border-radius:16px;padding:1.5rem;display:inline-block;margin:0 auto 1rem;">
+                    <i class="fas fa-robot" style="font-size:2rem;color:#1a56db;"></i>
+                </div>
+                <h5 style="font-weight:700;color:#0a1628;">AI Summarize</h5>
+                <p style="color:#666;">Get a smart AI-generated summary of any PDF, Word or text document.</p>
+                <a href="{% url 'summarize' %}" class="btn btn-primary btn-sm mt-2">Summarize Now</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CONVERSIONS LIST -->
+    <div class="row py-4">
+        <div class="col-12">
+            <div class="card p-4">
+                <h4 style="font-weight:800;color:#0a1628;margin-bottom:1.5rem;text-align:center;">
+                    <i class="fas fa-exchange-alt me-2" style="color:#1a56db;"></i>14 Supported Conversions
+                </h4>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <h6 style="color:#1a56db;font-weight:700;">📄 PDF</h6>
+                        <ul style="color:#666;padding-left:1.2rem;">
+                            <li>PDF → Word</li>
+                            <li>PDF → JPG</li>
+                            <li>PDF → PNG</li>
+                            <li>PDF → Excel</li>
+                            <li>PDF → PowerPoint</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 style="color:#1a56db;font-weight:700;">📝 Word</h6>
+                        <ul style="color:#666;padding-left:1.2rem;">
+                            <li>Word → PDF</li>
+                            <li>Word → JPG</li>
+                            <li>Word → PNG</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 style="color:#1a56db;font-weight:700;">🖼️ Images</h6>
+                        <ul style="color:#666;padding-left:1.2rem;">
+                            <li>JPG → PDF</li>
+                            <li>JPG → PNG</li>
+                            <li>PNG → PDF</li>
+                            <li>PNG → JPG</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 style="color:#1a56db;font-weight:700;">📊 Excel & PPTX</h6>
+                        <ul style="color:#666;padding-left:1.2rem;">
+                            <li>Excel → PDF</li>
+                            <li>PowerPoint → PDF</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- CALL TO ACTION -->
-    <div class="row py-5">
+    <div class="row py-4">
         <div class="col-12">
             <div style="background:linear-gradient(135deg,#0a1628,#1a56db);border-radius:24px;padding:3rem;text-align:center;">
                 <h2 style="color:white;font-weight:800;">Ready to get started?</h2>
-                <p style="color:#ccd6f6;margin:1rem 0;">Create your free account and upload your first document today.</p>
-                <a href="{% url 'register' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
-                    <i class="fas fa-user-plus me-2"></i>Create Free Account
+                <p style="color:#ccd6f6;margin:1rem 0;">No account needed — just upload your file and go!</p>
+                <a href="{% url 'convert' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
+                    <i class="fas fa-exchange-alt me-2"></i>Start Converting Now
                 </a>
             </div>
         </div>
