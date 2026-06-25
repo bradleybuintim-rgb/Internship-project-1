@@ -1,4 +1,4 @@
-﻿asgiref==3.11.1
+asgiref==3.11.1
 breadability==0.1.20
 certifi==2026.6.17
 chardet==7.4.3
