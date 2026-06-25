@@ -16,8 +16,8 @@
                         </p>
                     </div>
                     <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                        <a href="{% url 'dashboard' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
-                            <i class="fas fa-th-large me-2"></i>Dashboard
+                        <a href="{% url 'home' %}" class="btn btn-light btn-lg" style="font-weight:700;color:#1a56db;">
+                            <i class="fas fa-home me-2"></i>Home
                         </a>
                     </div>
                 </div>
@@ -25,12 +25,10 @@
         </div>
     </div>
 
-    <!-- CONVERSION OPTION CARDS -->
     <form method="POST" action="{% url 'do_convert' %}" enctype="multipart/form-data" id="convertForm">
         {% csrf_token %}
         <input type="hidden" name="conversion_type" id="selectedConversion">
 
-        <!-- PDF CONVERSIONS -->
         <div class="row mb-2 mt-3">
             <div class="col-12">
                 <h5 style="color:#0a1628;font-weight:700;">
@@ -50,7 +48,6 @@
             {% endfor %}
         </div>
 
-        <!-- WORD CONVERSIONS -->
         <div class="row mb-2">
             <div class="col-12">
                 <h5 style="color:#0a1628;font-weight:700;">
@@ -70,7 +67,6 @@
             {% endfor %}
         </div>
 
-        <!-- IMAGE CONVERSIONS -->
         <div class="row mb-2">
             <div class="col-12">
                 <h5 style="color:#0a1628;font-weight:700;">
@@ -90,7 +86,6 @@
             {% endfor %}
         </div>
 
-        <!-- EXCEL & PPTX CONVERSIONS -->
         <div class="row mb-2">
             <div class="col-12">
                 <h5 style="color:#0a1628;font-weight:700;">
@@ -110,7 +105,6 @@
             {% endfor %}
         </div>
 
-        <!-- UPLOAD & CONVERT SECTION -->
         <div class="row justify-content-center">
             <div class="col-md-7">
                 <div class="card" id="uploadSection" style="display:none;">
@@ -122,8 +116,7 @@
                         <div style="border:2px dashed #1a56db;border-radius:12px;padding:2rem;text-align:center;background:#f8faff;">
                             <i class="fas fa-cloud-upload-alt" style="font-size:3rem;color:#1a56db;margin-bottom:1rem;"></i>
                             <p style="color:#666;margin-bottom:1rem;">Click to select your file</p>
-                            <input type="file" name="file" id="fileInput" required
-                                   style="display:block;margin:0 auto;">
+                            <input type="file" name="file" id="fileInput" required style="display:block;margin:0 auto;">
                         </div>
                         <div style="background:#e8f0fe;border-radius:10px;padding:1rem;margin:1.5rem 0;">
                             <p style="color:#0a1628;margin:0;font-size:0.9rem;">
@@ -138,22 +131,13 @@
                 </div>
             </div>
         </div>
-
     </form>
 </div>
 
 <style>
-.conversion-card:hover {
-    border-color: #1a56db !important;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(26,86,219,0.2) !important;
-}
-.conversion-card.selected {
-    border-color: #1a56db !important;
-    background: #e8f0fe !important;
-}
+.conversion-card:hover { border-color: #1a56db !important; transform: translateY(-3px); box-shadow: 0 8px 25px rgba(26,86,219,0.2) !important; }
+.conversion-card.selected { border-color: #1a56db !important; background: #e8f0fe !important; }
 </style>
-
 <script>
 function selectConversion(conv) {
     document.querySelectorAll('.conversion-card').forEach(c => c.classList.remove('selected'));
