@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import FileResponse
 from .converter import convert_file
@@ -7,12 +7,11 @@ import os
 import tempfile
 import zipfile
 
-# ── ALLOWED FILE TYPES ───────────────────────────────────────────
 ALLOWED_EXTENSIONS = [
     '.pdf', '.doc', '.docx', '.jpg', '.jpeg',
     '.png', '.pptx', '.xlsx', '.xls', '.txt'
 ]
-MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
+MAX_FILE_SIZE = 20 * 1024 * 1024
 
 def allowed_file(filename):
     ext = os.path.splitext(filename)[1].lower()
@@ -21,36 +20,9 @@ def allowed_file(filename):
 def file_size_ok(file):
     return file.size <= MAX_FILE_SIZE
 
-# ── HOME ─────────────────────────────────────────────────────────
 def home(request):
     return render(request, 'core/home.html')
 
-# ── DASHBOARD ────────────────────────────────────────────────────
-def dashboard(request):
-    return render(request, 'core/dashboard.html')
-
-# ── UPLOAD ───────────────────────────────────────────────────────
-def upload(request):
-    if request.method == 'POST' and request.FILES.get('file'):
-        f = request.FILES['file']
-        if not allowed_file(f.name):
-            messages.error(request, 'File type not allowed. Please upload PDF, Word, Image, Excel or PPTX files only.')
-            return redirect('upload')
-        if not file_size_ok(f):
-            messages.error(request, 'File too large. Maximum file size is 20MB.')
-            return redirect('upload')
-        messages.success(request, f'"{f.name}" uploaded successfully!')
-        return redirect('dashboard')
-    return render(request, 'core/upload.html')
-
-# ── DOWNLOAD & DELETE ────────────────────────────────────────────
-def download(request, doc_id):
-    return redirect('dashboard')
-
-def delete(request, doc_id):
-    return redirect('dashboard')
-
-# ── CONVERT ──────────────────────────────────────────────────────
 def convert(request):
     pdf_conversions = [
         ('pdf_to_word',  'PDF → Word (.docx)'),
@@ -130,7 +102,6 @@ def do_convert(request):
     messages.error(request, 'Please upload a file.')
     return redirect('convert')
 
-# ── COMPRESS ─────────────────────────────────────────────────────
 def compress(request):
     return render(request, 'core/compress.html')
 
@@ -168,7 +139,6 @@ def do_compress(request):
     messages.error(request, 'Please upload a file.')
     return redirect('compress')
 
-# ── MERGE ────────────────────────────────────────────────────────
 def merge(request):
     return render(request, 'core/merge.html')
 
@@ -204,7 +174,6 @@ def do_merge(request):
                     pass
     return redirect('merge')
 
-# ── SPLIT ────────────────────────────────────────────────────────
 def split(request):
     return render(request, 'core/split.html')
 
@@ -237,7 +206,6 @@ def do_split(request):
     messages.error(request, 'Please upload a PDF file.')
     return redirect('split')
 
-# ── SUMMARIZE ────────────────────────────────────────────────────
 def summarize(request):
     return render(request, 'core/summarize.html')
 
@@ -270,6 +238,5 @@ def do_summarize(request):
     messages.error(request, 'Please upload a file.')
     return redirect('summarize')
 
-# ── CUSTOM 404 ───────────────────────────────────────────────────
 def custom_404(request, exception):
     return render(request, 'core/404.html', status=404)
